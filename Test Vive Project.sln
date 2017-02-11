@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Vive Project", "Test Vive Project.csproj", "{7B212BD7-8403-A47C-0D66-A47AAB096915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Vive Project.Editor", "Test Vive Project.Editor.csproj", "{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B212BD7-8403-A47C-0D66-A47AAB096915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B212BD7-8403-A47C-0D66-A47AAB096915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B212BD7-8403-A47C-0D66-A47AAB096915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B212BD7-8403-A47C-0D66-A47AAB096915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

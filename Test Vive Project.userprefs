@@ -1,0 +1,12 @@
+﻿<Properties StartupItem="Test Vive Project.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HTC.UnityPlugin\ViveInputUtility\readme.txt">
+    <Files>
+      <File FileName="Assets\HTC.UnityPlugin\ViveInputUtility\readme.txt" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
