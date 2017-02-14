@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ShowPPT : MonoBehaviour {
 
-    public String[] urls = new String[4];
+    private String[] urls = new String[4];
     
     public GameObject display;
     public SteamVR_TrackedController _controller;
-
+    private Boolean canChange;
     private int index;
 
     // Use this for initialization
@@ -30,16 +30,17 @@ public class ShowPPT : MonoBehaviour {
         urls[2] = ("http://i.imgur.com/6eEYNbO.jpg");
         urls[3] = ("http://i.imgur.com/ctg191V.jpg");
         index = 0;
+        canChange = true;
     }
 
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         
-        if (_controller.triggerPressed)
+        if (_controller.padPressed && canChange)
         {
-            
+            canChange = false;
             StartCoroutine("showPPT");
             
         }
@@ -51,13 +52,15 @@ public class ShowPPT : MonoBehaviour {
     {
         
         String url = urls[index];
-        if (index < urls.Length - 1)
+        
+        WWW www = new WWW(url);
+        yield return www;
+        if (index < urls.Length -1)
         {
             index++;
         }
-        WWW www = new WWW(url);
-        yield return www;
         
+        canChange = true;
         display.GetComponent<Renderer>().material.mainTexture = www.texture;
     }
 }
