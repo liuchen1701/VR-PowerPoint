@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class ShowPPT : MonoBehaviour {
 
+
+    GameObject thisController;
+    int controllerIndex;
     private String[] urls = new String[4];
     
     public GameObject display;
-    public SteamVR_TrackedController _controller;
+
 
     private Boolean clicked;
     private int index;
+    private Boolean right;
 
     // Use this for initialization
     /*IEnumerator Start()
@@ -25,6 +29,7 @@ public class ShowPPT : MonoBehaviour {
     }*/
     void Start()
     {
+        controllerIndex = (int)thisController.GetComponent<SteamVR_TrackedObject>().GetDeviceIndex();
         //_controller = GetComponent<SteamVR_TrackedController>();
         urls[0] = ("http://i.imgur.com/BqoNR9k.jpg");
         urls[1] = ("http://i.imgur.com/BqQsNge.jpg");
@@ -39,21 +44,44 @@ public class ShowPPT : MonoBehaviour {
 
     void Update()
     {
-        if(_controller.padPressed )
+        if(SteamVR_Controller.Input(controllerIndex).GetPressDown(SteamVR_Controller.ButtonMask.Axis0) )
         {
+            if( SteamVR_Controller.Input(controllerIndex).GetAxis().x < 0.0f )
+            {
+                right = false;
+            }
+            else
+            {
+                right = true;
+            }
             clicked = true;
         }
-        if(!_controller.padPressed && clicked)
+        if(!SteamVR_Controller.Input(controllerIndex).GetPressDown(SteamVR_Controller.ButtonMask.Axis0))
         {
             clicked = false;
-            StartCoroutine("showPPT");
+            
+                StartCoroutine("showPPT");
+            
         }
     }
 
 
     IEnumerator showPPT()
     {
-        
+
+        if (index < urls.Length - 1 && index != 0)
+        {
+            if (right)
+            {
+                index++;
+            }
+            else
+            {
+                index--;
+            }
+
+        }
+
         String url = urls[index];
         
         WWW www = new WWW(url);
@@ -62,10 +90,9 @@ public class ShowPPT : MonoBehaviour {
 
         display.GetComponent<Renderer>().material.mainTexture = www.texture;
 
-        if (index < urls.Length - 1)
-        {
-            index++;
-        }
+        
 
     }
+
+  
 }
