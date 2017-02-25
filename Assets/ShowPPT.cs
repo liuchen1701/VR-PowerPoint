@@ -9,7 +9,8 @@ public class ShowPPT : MonoBehaviour {
     
     public GameObject display;
     public SteamVR_TrackedController _controller;
-    private Boolean canChange;
+
+    private Boolean clicked;
     private int index;
 
     // Use this for initialization
@@ -30,22 +31,24 @@ public class ShowPPT : MonoBehaviour {
         urls[2] = ("http://i.imgur.com/6eEYNbO.jpg");
         urls[3] = ("http://i.imgur.com/ctg191V.jpg");
         index = 0;
-        canChange = true;
+  
+        clicked = false;
     }
 
 
-    // Update is called once per frame
-    void FixedUpdate()
+
+    void Update()
     {
-        
-        if (_controller.padPressed && canChange)
+        if(_controller.padPressed )
         {
-            canChange = false;
+            clicked = true;
+        }
+        if(!_controller.padPressed && clicked)
+        {
+            clicked = false;
             StartCoroutine("showPPT");
-            
         }
     }
-
 
 
     IEnumerator showPPT()
@@ -54,13 +57,15 @@ public class ShowPPT : MonoBehaviour {
         String url = urls[index];
         
         WWW www = new WWW(url);
+        
         yield return www;
-        if (index < urls.Length -1)
+
+        display.GetComponent<Renderer>().material.mainTexture = www.texture;
+
+        if (index < urls.Length - 1)
         {
             index++;
         }
-        
-        canChange = true;
-        display.GetComponent<Renderer>().material.mainTexture = www.texture;
+
     }
 }
