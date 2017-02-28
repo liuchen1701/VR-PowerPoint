@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShowPPT : MonoBehaviour {
 
 
-    GameObject thisController;
+    public GameObject thisController;
     int controllerIndex;
     private String[] urls = new String[4];
     
@@ -29,7 +29,7 @@ public class ShowPPT : MonoBehaviour {
     }*/
     void Start()
     {
-        controllerIndex = (int)thisController.GetComponent<SteamVR_TrackedObject>().GetDeviceIndex();
+        
         //_controller = GetComponent<SteamVR_TrackedController>();
         urls[0] = ("http://i.imgur.com/BqoNR9k.jpg");
         urls[1] = ("http://i.imgur.com/BqQsNge.jpg");
@@ -38,14 +38,34 @@ public class ShowPPT : MonoBehaviour {
         index = 0;
   
         clicked = false;
+
+        InvokeRepeating("change", 0, 1.2f);
+
     }
 
+    void change()
+    {
+        if (!(SteamVR_Controller.Input(controllerIndex).GetPressDown(SteamVR_Controller.ButtonMask.Axis0)) && clicked)
+        {
+            print(clicked);
+            if (clicked)
+            {
+                clicked = false;
+                StartCoroutine("showPPT");
 
+            }
+        }
+    }
 
     void Update()
     {
-        if(SteamVR_Controller.Input(controllerIndex).GetPressDown(SteamVR_Controller.ButtonMask.Axis0) )
+
+        //print(index);
+
+        controllerIndex = (int)thisController.GetComponent<SteamVR_TrackedObject>().GetDeviceIndex();
+        if (SteamVR_Controller.Input(controllerIndex).GetPress(SteamVR_Controller.ButtonMask.Axis0) && !clicked )
         {
+            Debug.Log("pressed");
             if( SteamVR_Controller.Input(controllerIndex).GetAxis().x < 0.0f )
             {
                 right = false;
@@ -56,40 +76,44 @@ public class ShowPPT : MonoBehaviour {
             }
             clicked = true;
         }
-        if(!SteamVR_Controller.Input(controllerIndex).GetPressDown(SteamVR_Controller.ButtonMask.Axis0))
-        {
-            clicked = false;
-            
-                StartCoroutine("showPPT");
-            
-        }
+        
     }
 
 
     IEnumerator showPPT()
     {
 
-        if (index < urls.Length - 1 && index != 0)
+
+        if (index < urls.Length  )
         {
-            if (right)
-            {
-                index++;
-            }
-            else
-            {
-                index--;
-            }
+            
+                print("..." + clicked);
+                if (right && index < urls.Length - 1)
+                {
+                    index++;                
+                    print("...//" + clicked);
+                }
+                else
+                {
+                    if (index != 0)
+                    {
+                        index--;                      
+                    }
+                }
 
-        }
+            }
+        
 
+        print(index);
         String url = urls[index];
         
         WWW www = new WWW(url);
-        
+        print(index+"....");
         yield return www;
-
+        print("showPPt");
         display.GetComponent<Renderer>().material.mainTexture = www.texture;
 
+  
         
 
     }
