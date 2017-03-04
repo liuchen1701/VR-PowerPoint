@@ -36,7 +36,7 @@ public class ShowPPT : MonoBehaviour {
         StartCoroutine(init());
 
         // update changing once per second
-        InvokeRepeating("change", 0, 1);
+        InvokeRepeating("change", 0, 0.8f);
 
     }
 
@@ -47,13 +47,16 @@ public class ShowPPT : MonoBehaviour {
 
 
 
-        numSlides = int.Parse(numSlidesString.data);
+        numSlides = int.Parse(numSlidesString.text);
+
+        Debug.Log(numSlides);
 
         urls = new String[numSlides];
 
         for (int i = 0; i< numSlides; i++)
         {
-            urls[i] = "http://ec2-54-67-100-135.us-west-1.compute.amazonaws.com/img/Slide"+i+"jpg";
+            urls[i] = "http://ec2-54-67-100-135.us-west-1.compute.amazonaws.com/img/Slide"+(i+1)+".jpg";
+            Debug.Log(urls[i]);
         } 
 
         StartCoroutine(showPPT());
