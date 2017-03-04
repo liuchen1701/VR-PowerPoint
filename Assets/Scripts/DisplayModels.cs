@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#if !UNITY_HAS_GOOGLEVR && !UNITY_EDITOR //if vive
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HTC.UnityPlugin.Vive;
@@ -204,3 +206,4 @@ public class DisplayModels : MonoBehaviour
         }
     }
 }
+#endif
