@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ShowPPT : MonoBehaviour {
 
+    public GameObject model;
+
     // the working controller
     public GameObject thisController;
     int controllerIndex;
@@ -24,8 +26,13 @@ public class ShowPPT : MonoBehaviour {
 
     private int numSlides;
 
+    private int startSlide;
+    private int endSlide;
+
     void Start()
-    {        
+    {
+        model.SetActive(false);
+
         //_controller = GetComponent<SteamVR_TrackedController>();
         
         index = -1;
@@ -44,14 +51,17 @@ public class ShowPPT : MonoBehaviour {
     {
         WWW numSlidesString = new WWW(numSlidesURL);
         yield return numSlidesString;
-
-
+        
 
         numSlides = int.Parse(numSlidesString.text);
 
         Debug.Log(numSlides);
 
         urls = new String[numSlides];
+
+        //get the interval for the model
+        startSlide = 20;
+        endSlide = 35;
 
         for (int i = 0; i< numSlides; i++)
         {
@@ -74,6 +84,18 @@ public class ShowPPT : MonoBehaviour {
 
             }
         }
+
+        // change model state
+
+        if(index >= startSlide && index <= endSlide)
+        {
+            model.SetActive(true);
+        }
+        else
+        {
+            model.SetActive(false);
+        }
+
     }
 
     void Update()
