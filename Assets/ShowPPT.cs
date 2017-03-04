@@ -5,43 +5,58 @@ using UnityEngine;
 
 public class ShowPPT : MonoBehaviour {
 
-
+    // the working controller
     public GameObject thisController;
     int controllerIndex;
-    private String[] urls = new String[4];
-    
+
+    // the image urls for ppt
+    private String[] urls;
+    // the index of currently showing image
+    private int index;
+
     public GameObject display;
 
-
-    private Boolean clicked;
-    private int index;
+    // display control flags
+    private Boolean clicked;    
     private Boolean right;
 
-    // Use this for initialization
-    /*IEnumerator Start()
-    {
-        urls[0]=("http://i.imgur.com/aSV44JT.png");
-        String url = urls[0];
-        WWW www = new WWW(url);
-        yield return www;
-        Debug.Log("...");
-        display.GetComponent<Renderer>().material.mainTexture = www.texture;
-    }*/
+    private String numSlidesURL = "http://ec2-54-67-100-135.us-west-1.compute.amazonaws.com/numslides";
+
+    private int numSlides;
+
     void Start()
-    {
-        
+    {        
         //_controller = GetComponent<SteamVR_TrackedController>();
-        urls[0] = ("http://i.imgur.com/BqoNR9k.jpg");
-        urls[1] = ("http://i.imgur.com/BqQsNge.jpg");
-        urls[2] = ("http://i.imgur.com/6eEYNbO.jpg");
-        urls[3] = ("http://i.imgur.com/ctg191V.jpg");
+        
         index = -1;
   
         clicked = false;
         right = true;
-        StartCoroutine("showPPT");
+        
+        StartCoroutine(init());
+
+        // update changing once per second
         InvokeRepeating("change", 0, 1);
 
+    }
+
+    IEnumerator init()
+    {
+        WWW numSlidesString = new WWW(numSlidesURL);
+        yield return numSlidesString;
+
+
+
+        numSlides = int.Parse(numSlidesString.data);
+
+        urls = new String[numSlides];
+
+        for (int i = 0; i< numSlides; i++)
+        {
+            urls[i] = "http://ec2-54-67-100-135.us-west-1.compute.amazonaws.com/img/Slide"+i+"jpg";
+        } 
+
+        StartCoroutine(showPPT());
     }
 
     void change()
@@ -60,13 +75,16 @@ public class ShowPPT : MonoBehaviour {
 
     void Update()
     {
-
-        //print(index);
-
+        
+        // get which controller is working
         controllerIndex = (int)thisController.GetComponent<SteamVR_TrackedObject>().GetDeviceIndex();
+
+        
         if (SteamVR_Controller.Input(controllerIndex).GetPress(SteamVR_Controller.ButtonMask.Axis0) && !clicked )
         {
             Debug.Log("pressed");
+
+            // check if the user is pressing on the left side of pad or the right side
             if( SteamVR_Controller.Input(controllerIndex).GetAxis().x < 0.0f )
             {
                 right = false;
@@ -75,6 +93,7 @@ public class ShowPPT : MonoBehaviour {
             {
                 right = true;
             }
+            // update the click condition, prepare for change
             clicked = true;
         }
         
@@ -88,14 +107,19 @@ public class ShowPPT : MonoBehaviour {
         if (index < urls.Length  )
         {
 
-            print("left or right: "+right);
-                print("..." + clicked);
-                if (right && index < urls.Length - 1)
+            //Debug.Log("left or right: "+right);
+            //Debug.Log("..." + clicked);
+
+            // going to the next silde if the last condition of user pressing is right
+            // do not change if it is the last slide
+            if (right && index < urls.Length - 1)
                 {
-                    index++;                
-                    print("...//" + clicked);
-                }
-                else if(!right)
+                    index++;
+                    //Debug.Log("...//" + clicked);
+            }
+
+            // go to the previous slide
+            else if(!right)
                 {
                     if (index != 0)
                     {
@@ -104,21 +128,20 @@ public class ShowPPT : MonoBehaviour {
                 }
 
             }
-        
 
-        print(index);
+
+        //Debug.Log(index);
         String url = urls[index];
         
+        // get the url of the image
         WWW www = new WWW(url);
         print(index+"....");
         yield return www;
-        print("showPPt");
+
+        //Debug.Log("showPPt");
+
+        //update the display screen using the image as the texture
         display.GetComponent<Renderer>().material.mainTexture = www.texture;
-
-  
-        
-
-    }
-
-  
+       
+    } 
 }
