@@ -35,11 +35,12 @@ public class ShowPPT : MonoBehaviour {
         urls[1] = ("http://i.imgur.com/BqQsNge.jpg");
         urls[2] = ("http://i.imgur.com/6eEYNbO.jpg");
         urls[3] = ("http://i.imgur.com/ctg191V.jpg");
-        index = 0;
+        index = -1;
   
         clicked = false;
-
-        InvokeRepeating("change", 0, 1.2f);
+        right = true;
+        StartCoroutine("showPPT");
+        InvokeRepeating("change", 0, 1);
 
     }
 
@@ -86,14 +87,15 @@ public class ShowPPT : MonoBehaviour {
 
         if (index < urls.Length  )
         {
-            
+
+            print("left or right: "+right);
                 print("..." + clicked);
                 if (right && index < urls.Length - 1)
                 {
                     index++;                
                     print("...//" + clicked);
                 }
-                else
+                else if(!right)
                 {
                     if (index != 0)
                     {
