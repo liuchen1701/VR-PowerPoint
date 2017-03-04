@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Vive Project", "Test Vive Project.csproj", "{7B212BD7-8403-A47C-0D66-A47AAB096915}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Vive Project.Editor", "Test Vive Project.Editor.csproj", "{8FA71475-7BD2-D005-A8AC-2FA3505A30E1}"
