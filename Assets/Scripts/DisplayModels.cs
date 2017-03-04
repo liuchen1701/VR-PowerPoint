@@ -33,24 +33,56 @@ public class DisplayModels : MonoBehaviour
         Vector2 offset;
 
         // Toggle displaying models
-        if ( ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Trigger) )
+        if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Trigger))
         {
             ToggleDisplay();
         }
 
-        // Toggle scaling
-        if ( ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Pad) )
+        if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.PadTouch))
         {
-            ToggleScale();
+            beginTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
         }
 
-        
-        if ( ViveInput.GetPress(HandRole.RightHand, ControllerButton.PadTouch) )
+        // Switch among models in list if swiping left or right on touchpad
+        if (ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.PadTouch))
         {
-            RecordTouch();
-            offset = beginTouchPos - lastTouchPos;
+            endTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            offset = endTouchPos - beginTouchPos;
+        }
 
+        if (ViveInput.GetPress(HandRole.RightHand, ControllerButton.PadTouch))
+        {
+            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
             touchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            offset = touchPos - lastTouchPos;
+
+            // Scale the model bigger or smaller if swiping up or down on touchpad
+            if (!scaleOn)
+            {
+                Rotate(touchPos);
+            }
+
+            lastTouchPos = touchPos;
+        }
+
+        // Toggle scaling
+        if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Pad))
+        {
+            scaleOn = true;
+        }
+
+        if (ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.Pad))
+        {
+            scaleOn = false;
+        }
+
+        if (ViveInput.GetPress(HandRole.RightHand, ControllerButton.Pad))
+        {
+            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            touchPos = ViveInput.GetPadAxis(HandRole.RightHand);
+            offset = touchPos - lastTouchPos;
 
             // Scale the model bigger or smaller if swiping up or down on touchpad
             if (scaleOn)
@@ -58,28 +90,10 @@ public class DisplayModels : MonoBehaviour
                 Scale(offset);
             }
 
-            // Rotate the model based on touchpad position
-            else
-            {
-                Rotate(touchPos);
-            }
+            lastTouchPos = touchPos;
         }
 
-        // Switch among models in list if swiping left or right on touchpad
-        if ( ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.PadTouch) )
-        {
-            endTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
-            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
-            offset = endTouchPos - beginTouchPos;
-            if (offset.x < -0.1f && Mathf.Abs(offset.y) < 0.1f)
-            {
-                DisplayNext();
-            }
-            else if (offset.x > 0.1f && Mathf.Abs(offset.y) < 0.1f)
-            {
-                DisplayPrev();
-            }
-        }
+
     }
 
     void ToggleScale()
@@ -141,16 +155,7 @@ public class DisplayModels : MonoBehaviour
         }
         */
 
-        modelList[i].transform.Rotate(new Vector3(1.0f * touchPos.x, 0.0f, 1.0f * touchPos.y));
-    }
-
-    void RecordTouch()
-    {
-        if ( ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.PadTouch) )
-        {
-            beginTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
-            lastTouchPos = ViveInput.GetPadAxis(HandRole.RightHand);
-        }
+        modelList[i].transform.Rotate(new Vector3(1.0f * touchPos.x, 1.0f * touchPos.y, 0.0f));
     }
 
     void DisplayNext()
